@@ -1,12 +1,19 @@
-FROM node:14.17-alpine
+FROM node:14.17-alpine AS builder
 
-WORKDIR /usr/app
-
+WORKDIR /app
 COPY package*.json ./
-RUN npm ci -qy
+COPY prisma ./prisma/
+RUN npm install
 
 COPY . .
 
-EXPOSE 8080
+RUN npm run build
 
-CMD ["npm", "start"]
+FROM node:14.17-alpine
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 8080
+CMD [ "npm", "run", "start:prod" ]
