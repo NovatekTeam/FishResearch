@@ -1,0 +1,10 @@
+version: '2'
+services:
+  server:
+    build:
+      context: ./server/
+    volumes:
+      - ./server/:/app
+      - /app/node_modules
+    ports:
+      - "8888:8080"
