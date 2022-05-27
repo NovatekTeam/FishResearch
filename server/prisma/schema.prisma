@@ -7,8 +7,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model test_table {
-  id        Int      @id
-  name      String?  @db.VarChar(55)
-  used_flag Boolean? @default(false)
+generator nestjsDto {
+provider = "prisma-generator-nestjs-dto"
+output = "../src/generated/dto"
+outputToNestJsResourceStructure = "false"
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model merc_table1 {
+  id_ves         Int?
+  id_own         Int?
+  date_fishery   DateTime? @db.Date
+  num_part       Decimal?  @db.Decimal
+  id_plat        Int?
+  id_vsd         Int       @id
+  name_plat      String?   @db.VarChar(255)
+  product_period String?   @db.VarChar(255)
+  region_plat    String?   @db.VarChar(255)
+
+  @@ignore
+}
+
+model r_fish_type {
+  id   Int    @id(map: "R_FISH_TYPE_pkey")
+  fish String @db.VarChar(255)
+}
+
+model r_prod_designate {
+  id             Int    @id(map: "R_PROD_DESIGNATE_pkey")
+  prod_designate String @db.VarChar(255)
+}
+
+model r_prod_type {
+  id_prod_type   Int
+  prod_type      String @db.VarChar(255)
+  id_fish        Int
+  prod_type_full String @db.VarChar(512)
+
+  @@id([id_prod_type, id_fish])
+}
+
+model r_regime {
+  id_regime Int    @id
+  regime    String @db.VarChar(255)
+}
+
+model r_region {
+  id_region Int    @id
+  region    String @db.VarChar(255)
+}
+
+model fish_catch {
+  id_ves       Int
+  date         DateTime @db.Date
+  id_region    Int
+  id_fish      Int
+  catch_volume Decimal  @db.Decimal
+  id_regime    Int
+  permit       Int
+  id_own       Int
+
+  @@id([id_ves, date, id_fish, id_regime, permit])
 }

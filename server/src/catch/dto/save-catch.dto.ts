@@ -1,36 +1,45 @@
-import { IsISO8601, IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { Type } from "class-transformer"
+import {   IsNotEmpty, IsNumber } from "class-validator"
+
 
 export class SaveCatchDto {
     @IsNumber()
     @IsNotEmpty()
+    @Type(() => Number)
     id_ves: number
-
+   
     @IsNotEmpty()
-    @IsISO8601()
-    date: string
+    @Type(() => Date)
+    date: Date
 
     @IsNumber()
     @IsNotEmpty()
+    @Type(() => Number)
     id_region: number
 
     @IsNumber()
     @IsNotEmpty()
-    if_fish: number
+    @Type(() => Number)
+    id_fish: number
 
     @IsNumber()
     @IsNotEmpty()
+    @Type(() => Number)
     catch_volume: number
 
     @IsNumber()
     @IsNotEmpty()
+    @Type(() => Number)
     id_regime: number
 
     @IsNumber()
     @IsNotEmpty()
+    @Type(() => Number)
     permit: number
 
     @IsNumber()
     @IsNotEmpty()
-    id_owm: number
+    @Type(() => Number)
+    id_own: number
 
 }
