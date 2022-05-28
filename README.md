@@ -9,7 +9,7 @@
 ```
 git clone https://github.com/NovatekTeam/FishResearch.git
 cd FishResearch
-docker-compose up -в
+docker-compose up -d
 sh start.sh
 ```
 
