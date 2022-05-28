@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import os
 from sklearn.metrics import mean_absolute_error
 from prepare_data import get_data
 
@@ -40,7 +41,8 @@ def db1_sarima_anomalies_detect(dataframe, table):
     rate.loc[(rate.anomalies > 0), 'anomalies']  = 1
     rate.loc[(rate.anomalies.isna()), 'anomalies']  = 0
 
-    rate.to_csv(f'catch_{table}_sarima_predict.csv')
+    output_path = os.path.join('..','output',f'catch_{table}_sarima_predict.csv')
+    rate.to_csv(output_path)
 
 
 
@@ -61,14 +63,15 @@ def db2_sarima_anomalies_detect(dataframe, table):
     rate.loc[(rate.anomalies > 0), 'anomalies']  = 1
     rate.loc[(rate.anomalies.isna()), 'anomalies']  = 0
 
-    rate.to_csv(f'ext_{table}_sarima_predict.csv')
+    output_path = os.path.join('..','output',f'catch_{table}_sarima_predict.csv')
+    rate.to_csv(output_path)
 
 
 ################################################################################################################
 
-catch = '/home/savin/Documents/DEV/dataset_fish/Датасет/test_data/db1/catch.csv'
-ext1 = '/home/savin/Documents/DEV/dataset_fish/Датасет/test_data/db2/Ext.csv'
-ext2 = '/home/savin/Documents/DEV/dataset_fish/Датасет/test_data/db2/Ext2.csv'
+catch=os.path.join('..','dataset','db1','catch.csv')
+ext1=os.path.join('..','dataset','db2','Ext.csv')
+ext2=os.path.join('..','dataset','db2','Ext2.csv')
 
 df_catch, df_ext = get_data(catch_path=catch, ext_path=ext1, ext2_path=ext2)
 
