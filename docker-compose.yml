@@ -22,3 +22,28 @@ services:
       - 8088:8088
     volumes: 
       - ./superset.db:/app/superset-home/superset.db
+
+  nifi:
+    image: apache/nifi:1.10.0
+    container_name: nifi
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      # HTTP
+      - 5050:8080/tcp
+      # HTTPS
+      - 8443:8443/tcp
+      # Remote Input Socket
+      - 10000:10000/tcp
+      # JVM Debugger
+      - 8000:8000/tcp
+      # Cluster Node Protocol
+      #- 11443:11443/tcp
+    volumes:
+      # mkdir /var/lib/nifi && chown -R 1000:1000 /var/lib/nifi
+      - /var/lib/nifi/database_repository:/opt/nifi/nifi-current/database_repository
+      - /var/lib/nifi/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository
+      - /var/lib/nifi/content_repository:/opt/nifi/nifi-current/content_repository
+      - /var/lib/nifi/provenance_repository:/opt/nifi/nifi-current/provenance_repository
+      - /var/lib/nifi/state:/opt/nifi/nifi-current/state
+      - /var/lib/nifi/logs:/opt/nifi/nifi-current/logs
