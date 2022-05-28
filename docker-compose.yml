@@ -1,15 +1,6 @@
 version: '2'
 services:
-  server:
-    build:
-      context: ./server/
-    volumes:
-      - ./server/:/app
-      - /app/node_modules
-    ports:
-      - 8888:8080
-  
-  postgresql: ## DB for MLFLOW
+  postgresql: 
     image: postgres:10.5
     container_name: hack-postgresql
     environment:
@@ -21,40 +12,11 @@ services:
     hostname: postgresql
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
-    
-  mlflow:
-    build: ./mlflow
-    container_name: hack-mlflow
-    depends_on:
-      - postgresql
-    expose: 
-      - ${MLFLOW_PORT}
-    ports:
-      - ${MLFLOW_PORT}:${MLFLOW_PORT}
-    environment:
-      MLFLOW_PORT: ${MLFLOW_PORT}
-      DB_URI: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@hack-postgresql:5432/${POSTGRES_DB}
-      VIRTUAL_HOST: ${HOST}
-      VIRTUAL_PORT: ${MLFLOW_PORT}
-      FTP_URI: ftp://username:${FTP_PASSWORD}@${MLFLOW_IP}:21
-    restart: always
-
-  ftpd_server:
-    image: bogem/ftp
-    container_name: hack-ftp_server
-    ports:
-      - 820:20
-      - 821:21
-    volumes:
-      - ./artifacts:/home/vsftpd
-    environment:
-      FTP_USER: username
-      FTP_PASS: ${FTP_PASSWORD}
-      PASV_ADDRESS: ${MLFLOW_IP}
-    restart: always
-
+  
   superset:
     image: apache/superset
     container_name: superset
     ports:
       - 8088:8088
+    volumes: 
+      - ./superset.db:/app/superset-home/superset.db
