@@ -47,3 +47,6 @@ services:
       - /var/lib/nifi/provenance_repository:/opt/nifi/nifi-current/provenance_repository
       - /var/lib/nifi/state:/opt/nifi/nifi-current/state
       - /var/lib/nifi/logs:/opt/nifi/nifi-current/logs
+    environment:
+      NIFI_WEB_HTTP_HOST: '0.0.0.0'
+      NIFI_WEB_HTTP_PORT: 8080
