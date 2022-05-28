@@ -7,7 +7,7 @@ services:
       - ./server/:/app
       - /app/node_modules
     ports:
-      - "8888:8080"
+      - 8888:8080
   
   postgresql: ## DB for MLFLOW
     image: postgres:10.5
@@ -43,8 +43,8 @@ services:
     image: bogem/ftp
     container_name: hack-ftp_server
     ports:
-      - "820:20"
-      - "821:21"
+      - 820:20
+      - 821:21
     volumes:
       - ./artifacts:/home/vsftpd
     environment:
@@ -52,3 +52,9 @@ services:
       FTP_PASS: ${FTP_PASSWORD}
       PASV_ADDRESS: ${MLFLOW_IP}
     restart: always
+
+  superset:
+    image: apache/superset
+    container_name: superset
+    ports:
+      - 8088:8088
